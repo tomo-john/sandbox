@@ -2,42 +2,49 @@
 
 namespace App\Providers;
 
+use Carbon\CarbonImmutable;
+use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Gate;
-use App\Models\User;
-use App\Models\Post;
+use Illuminate\Validation\Rules\Password;
 
 class AppServiceProvider extends ServiceProvider
 {
+    /**
+     * Register any application services.
+     */
     public function register(): void
     {
         //
     }
 
+    /**
+     * Bootstrap any application services.
+     */
     public function boot(): void
     {
-        // test
-        Gate::define('test', function (User $user) {
-            if($user->id === 1) {
-                return true;
-            }
-            return false;
-        });
+        $this->configureDefaults();
+    }
 
-        // postの編集・削除
-        Gate::define('update-post', function(User $user, Post $post) {
-            return $user->id === $post->user_id;
-        });
+    /**
+     * Configure default behaviors for production-ready applications.
+     */
+    protected function configureDefaults(): void
+    {
+        Date::use(CarbonImmutable::class);
 
-        Gate::define('delete-post', function(User $user, Post $post) {
-            return $user->id === $post->user_id || $user->role === 'admin';
-        });
+        DB::prohibitDestructiveCommands(
+            app()->isProduction(),
+        );
 
-        // UserList
-        Gate::define('admin', function (User $user) {
-            if ($user->role === 'admin') {
-                return true;
-            }
-        });
+        Password::defaults(fn (): ?Password => app()->isProduction()
+            ? Password::min(12)
+                ->mixedCase()
+                ->letters()
+                ->numbers()
+                ->symbols()
+                ->uncompromised()
+            : null,
+        );
     }
 }
