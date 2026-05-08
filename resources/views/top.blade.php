@@ -1,25 +1,20 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <title>{{ __('Welcome') }} - {{ config('app.name', 'Laravel') }}</title>
-
-        <link rel="icon" href="/favicon.ico" sizes="any">
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
-
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    </head>
-
-    <body>
-        <div style="padding: 20px; font-size: 2rem;">
-            Top Page <br>
+<x-layouts.app>
+    <div class="max-w-5xl mx-auto bg-white rounded-xl p-4 flex flex-col items-center gap-4">
+        <div class="flex text-slate-500 items-center gap-3">
+            Top Page
             <i class="fa-solid fa-dog"></i>
         </div>
-    </body>
-</html>
+
+        <div class="flex gap-4">
+            <a href="{{ route('maze') }}">
+                <i class="fa-solid fa-dog text-pink-100"></i>
+            </a>
+            <a href="{{ route('alpine') }}">
+                <i class="fa-solid fa-dog text-pink-200"></i>
+            </a>
+            <a href="{{ route('puppy') }}">
+                <i class="fa-solid fa-dog text-pink-300"></i>
+            </a>
+        </div>
+    </div>
+</x-layouts.app>
